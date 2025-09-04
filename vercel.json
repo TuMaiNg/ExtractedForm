@@ -1,6 +1,5 @@
 {
   "version": 2,
-  "name": "korean-insurance-claim-processor",
   "builds": [
     {
       "src": "package.json",
