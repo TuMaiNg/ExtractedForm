@@ -415,3 +415,4 @@ Nếu gặp vấn đề, vui lòng:
 **Phiên bản:** 1.0.0  
 **Cập nhật lần cuối:** January 2025  
 **Tác giả:** Insurance Claim Extractor Team
+# ExtractedForm
