@@ -27,15 +27,16 @@ class KoreanMedicalInsuranceExtractor {
       ],
       
       hkidPassport: [
-        /(?:HKID|Passport|신분증번호|여권번호|ID Number)[\s:：]*([A-Za-z0-9\(\)\s-]+)/gi,
-        /(?:신분증|여권|ID)[\s:：]*([A-Za-z0-9\(\)\s-]+)/gi,
+        /(?:HKID|Passport|신분증번호|여권번호|ID Number)[\s:：]*([A-Za-z0-9()\s-]+)/gi,
+        /(?:신분증|여권|ID)[\s:：]*([A-Za-z0-9()\s-]+)/gi,
         /([A-Z]{1,2}[0-9]{6,8}\([0-9A-Z]\))/g
       ],
       
       dateOfBirth: [
-        /(?:생년월일|Date of Birth|Birth Date|DOB)[\s:：]*([0-9\s\-\/\.년월일]+)/gi,
-        /([0-9]{1,2}[\/\-\.][0-9]{1,2}[\/\-\.][0-9]{4})/g,
-        /([0-9]{4}[\/\-\.][0-9]{1,2}[\/\-\.][0-9]{1,2})/g
+        /(?:생년월일|Date of Birth|Birth Date|DOB)[\s:：]*([0-9\s\-/.년월일]+)/gi,
+        /([0-9]{1,2}[/\-.][0-9]{1,2}[/\-.][0-9]{4})/g,
+        /([0-9]{4}[/\-.][0-9]{1,2}[/\-.][0-9]{1,2})/g,
+        /([0-9]{1,2}[/\-.][0-9]{1,2}[/\-.][0-9]{1,2})/g
       ],
       
       // Hospital information
@@ -86,10 +87,10 @@ class KoreanMedicalInsuranceExtractor {
       
       // Medical information
       treatmentDate: [
-        /(?:진료일자?|내원일자?|수진일자?|방문일자?|TREATMENT DATE|Visit Date)[\s:：]*([0-9\.\-\/년월일\s]{8,})/gi,
-        /(20[0-9]{2}[.\-\/\s]*[0-9]{1,2}[.\-\/\s]*[0-9]{1,2})/g,
+        /(?:진료일자?|내원일자?|수진일자?|방문일자?|TREATMENT DATE|Visit Date)[\s:：]*([0-9.\-/년월일\s]{8,})/gi,
+        /(20[0-9]{2}[.\-/\s]*[0-9]{1,2}[.\-/\s]*[0-9]{1,2})/g,
         /([0-9]{4}년[0-9]{1,2}월[0-9]{1,2}일)/g,
-        /(?:Date|Treatment|Visit|Admission)[\s:：]*([0-9\s\-\/\.]+)/gi
+        /(?:Date|Treatment|Visit|Admission)[\s:：]*([0-9\s\-/.]+)/gi
       ],
       
       department: [
@@ -99,9 +100,9 @@ class KoreanMedicalInsuranceExtractor {
       ],
       
       doctorName: [
-        /(?:의사명|담당의|주치의|의료진|DOCTOR|Doctor|의사\s*성명)[\s:：]*([가-힣A-Za-z\s\.]{2,})/gi,
-        /(?:Dr\.|Doctor|의사)\s*([가-힣A-Za-z\s\.]+)/gi,
-        /(?:Doctor's Name|Physician)[\s:：]*([A-Za-z\s\.]+)/gi
+        /(?:의사명|담당의|주치의|의료진|DOCTOR|Doctor|의사\s*성명)[\s:：]*([가-힣A-Za-z\s.]{2,})/gi,
+        /(?:Dr.|Doctor|의사)\s*([가-힣A-Za-z\s.]+)/gi,
+        /(?:Doctor's Name|Physician)[\s:：]*([A-Za-z\s.]+)/gi
       ],
       
       diagnosis: [
@@ -127,21 +128,21 @@ class KoreanMedicalInsuranceExtractor {
         /(?:진료비\s*총액|총\s*진료비|진료비\s*합계|의료비\s*총액|TOTAL COST|Medical Fee)[\s:：]*([0-9,]+)(?:\s*원|KRW)?/gi,
         /총액[\s:：]*([0-9,]+)/gi,
         /([0-9,]+)\s*원(?:\s*총액)?/g,
-        /(?:Total|Amount|Cost|Fee|Charge)[\s:：]*\$?([0-9,\.]+)/gi
+        /(?:Total|Amount|Cost|Fee|Charge)[\s:：]*\$?([0-9,.]+)/gi
       ],
       
       patientPayment: [
         /(?:본인부담금|환자부담금?|개인부담|PATIENT PAYMENT|Co-payment)[\s:：]*([0-9,]+)(?:\s*원|KRW)?/gi,
         /본인부담[\s:：]*([0-9,]+)/gi,
         /부담금[\s:：]*([0-9,]+)/gi,
-        /(?:Deductible|Copay|Patient Pay|Out of Pocket)[\s:：]*\$?([0-9,\.]+)/gi
+        /(?:Deductible|Copay|Patient Pay|Out of Pocket)[\s:：]*\$?([0-9,.]+)/gi
       ],
       
       insuranceClaim: [
         /(?:보험청구액?|급여청구|보험급여|INSURANCE CLAIM|Insurance Amount)[\s:：]*([0-9,]+)(?:\s*원|KRW)?/gi,
         /(?:보험|급여)[\s:：]*([0-9,]+)/gi,
         /청구[\s:：]*([0-9,]+)/gi,
-        /(?:Claim|Coverage|Benefit|Reimbursement)[\s:：]*\$?([0-9,\.]+)/gi
+        /(?:Claim|Coverage|Benefit|Reimbursement)[\s:：]*\$?([0-9,.]+)/gi
       ],
       
       // Banking Information
@@ -343,12 +344,12 @@ class KoreanMedicalInsuranceExtractor {
       case 'patientPayment':
       case 'insuranceClaim':
         // Extract numbers from currency values
-        const numbers = cleanValue.match(/[0-9,\.]+/);
+        const numbers = cleanValue.match(/[0-9,.]+/);
         return numbers ? numbers[0].replace(/,/g, '') : cleanValue;
         
       case 'phone':
         // Extract phone numbers
-        const phone = cleanValue.match(/[0-9-\s\(\)]+/);
+        const phone = cleanValue.match(/[0-9\-\s()]+/);
         return phone ? phone[0].replace(/[^0-9-]/g, '') : cleanValue;
         
       case 'patientName':
@@ -369,7 +370,7 @@ class KoreanMedicalInsuranceExtractor {
         
       case 'treatmentDate':
         // Extract date patterns
-        const dateMatch = cleanValue.match(/\d{4}[\s\-\/]?\d{1,2}[\s\-\/]?\d{1,2}|\d{1,2}[\s\-\/]\d{1,2}[\s\-\/]\d{4}/);
+        const dateMatch = cleanValue.match(/\d{4}[\s\-/]?\d{1,2}[\s\-/]?\d{1,2}|\d{1,2}[\s\-/]\d{1,2}[\s\-/]\d{4}/);
         return dateMatch ? dateMatch[0] : cleanValue;
         
       case 'department':
@@ -394,9 +395,7 @@ class KoreanMedicalInsuranceExtractor {
  */
 export async function extractFromDocument(file, options = {}) {
   const { 
-    onProgress = () => {},
-    useService = true,
-    serviceEndpoint = '/api/extract'
+    onProgress = () => {}
   } = options;
 
   const startTime = Date.now();
